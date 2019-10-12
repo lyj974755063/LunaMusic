@@ -41,7 +41,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
             //set album art
             Glide.with(context)
                     .load(MusicUtils.getArtUri(song.getAlbumId()))
-                    .fitCenter()
+                    .fitCenter()//need fix
                     .placeholder(R.mipmap.test_load)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(((ViewHolder)viewHolder).getBackgroundImage());
