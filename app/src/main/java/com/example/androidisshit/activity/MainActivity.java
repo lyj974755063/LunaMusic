@@ -26,25 +26,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         //Parallax list
         final ParallaxRecyclerView parallaxRecyclerView = (ParallaxRecyclerView) findViewById(R.id.RecyclerView);
         parallaxRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         parallaxRecyclerView.setHasFixedSize(true);
         parallaxRecyclerView.setAdapter(new MyRecyclerAdapter(this));
-        /*
-        parallaxRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    Glide.with((Context) MainActivity.this).resumeRequests();//恢复Glide加载图片
-                }else {
-                    Glide.with((Context) MainActivity.this).pauseRequests();//禁止Glide加载图片
-                }
-            }
-        });
-        */
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

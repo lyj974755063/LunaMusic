@@ -7,15 +7,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
-import com.example.androidisshit.R;
+import com.bumptech.glide.Glide;
 import com.example.androidisshit.entity.Song;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MusicUtils {
+    final static int EXCLUDE_DURATION = 40;
 
-    public static List<Song> getMusic(Context context) {
+    public static List<Song> getAllMusic(Context context) {
         List<Song> songList = new ArrayList<>();
         Cursor cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
                 , null, null, null, MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
@@ -23,13 +24,17 @@ public class MusicUtils {
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 Song song = new Song();
-                song.name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME));
-                song.id = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID));
-                song.singer = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST));
-                song.path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
-                song.duration = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
-                song.size = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE));
-                song.albumId = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
+                song.setDuration(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)));
+                if (!checkCanInclude(song.getDuration())) {
+                    continue;
+                }
+                song.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)));
+                song.setId(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)));
+                song.setArtist(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)));
+                song.setPath(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)));
+                song.setSize(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE)));
+                song.setAlbumId(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)));
+                song.setAlbumTitle(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)));
                 songList.add(song);
             }
         }
@@ -64,4 +69,20 @@ public class MusicUtils {
         //return Uri.parse(mUriAlbums + "/" + Long.toString(album_id));
         return uri;
     }
+
+    private static boolean checkCanInclude(int duration) {
+        if (duration > 0) {
+            duration /= 1000;
+            if (duration > EXCLUDE_DURATION) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+
+    }
+
 }
+

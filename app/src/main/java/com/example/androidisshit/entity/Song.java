@@ -1,13 +1,20 @@
 package com.example.androidisshit.entity;
 
+import java.util.List;
+
 public class Song {
-    public String name;//歌曲名
-    public String singer;//歌手
-    public long size;//歌曲所占空间大小
-    public int duration;//歌曲时间长度
-    public String path;//歌曲地址
-    public long  albumId;//图片id
-    public long id;//歌曲id
+    private String title;//歌曲名
+    private String artist;//歌手
+    private long size;//文件大小
+    private int duration;//歌曲时间长度
+    private String path;//歌曲路径
+    private long  albumId;//专辑图片id
+    private String albumTitle;//专辑名
+    private long id;//歌曲id
+
+    public static List<Song> allSongs;
+
+    public Song(){};
 
     public long getAlbumId()
     {
@@ -29,20 +36,20 @@ public class Song {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getSinger() {
-        return singer;
+    public String getArtist() {
+        return artist;
     }
 
-    public void setSinger(String singer) {
-        this.singer = singer;
+    public void setArtist(String artist) {
+        this.artist = artist;
     }
 
     public long getSize() {
@@ -67,5 +74,13 @@ public class Song {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getAlbumTitle() {
+        return albumTitle;
+    }
+
+    public void setAlbumTitle(String albumTitle) {
+        this.albumTitle = albumTitle;
     }
 }
