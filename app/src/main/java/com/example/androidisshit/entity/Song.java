@@ -1,8 +1,9 @@
 package com.example.androidisshit.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Song {
+public class Song implements Serializable {
     private String title;//歌曲名
     private String artist;//歌手
     private long size;//文件大小

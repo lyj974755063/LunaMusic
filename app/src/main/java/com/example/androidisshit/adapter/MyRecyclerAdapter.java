@@ -11,16 +11,25 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.androidisshit.R;
 import com.example.androidisshit.entity.Album;
-import com.example.androidisshit.entity.Song;
 import com.example.androidisshit.utils.MusicUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MyRecyclerAdapter extends RecyclerView.Adapter {
 
     private Context context;
     private LayoutInflater inflater;
     private List<Album> albums;
+
+    private RecycleViewOnItemClickListener itemClickListener;
+    public interface RecycleViewOnItemClickListener {
+        void onItemClick(View view, int position, Map data);
+    }
+    public void setOnItemClickListener(RecycleViewOnItemClickListener onItemClickListener){
+        this.itemClickListener = onItemClickListener;
+    }
 
     public MyRecyclerAdapter(Context context){
         this.context = context;
@@ -34,9 +43,10 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, final int position) {
+        final Album album;
         if (!albums.isEmpty()) {
-            Album album = albums.get(position);
+            album = albums.get(position);
             //set album title
             ((ViewHolder)viewHolder).getTextView().setText(album.getAlbumTitle());
             //set album art
@@ -46,6 +56,19 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
                     .placeholder(R.mipmap.test_load)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(((ViewHolder)viewHolder).getBackgroundImage());
+
+            if (itemClickListener!=null) {
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Map<String,Object> map = new HashMap<String, Object>();
+                        map.put("title", album.getAlbumTitle());
+                        map.put("artist",album.getAlbumArtist());
+                        map.put("uri",album.getAlbumId());
+                        itemClickListener.onItemClick(viewHolder.itemView, position, map);
+                    }
+                });
+            }
         }
         // # CAUTION:
         // Important to call this method
@@ -57,7 +80,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
         return albums.size();
     }
 
-    public static class ViewHolder extends ParallaxViewHolder {
+    public static class ViewHolder extends ParallaxViewHolder{
 
         private final TextView textView;
 
