@@ -1,5 +1,5 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="nowPlaying_albumTitleSize">90sp</dimen>
+    <dimen name="nowPlaying_albumTitleSize">180sp</dimen>
     <dimen name="nowPlaying_coverSize">650</dimen>
 </resources>

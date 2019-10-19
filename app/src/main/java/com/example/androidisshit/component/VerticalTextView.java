@@ -51,6 +51,4 @@ public class VerticalTextView extends AppCompatTextView {
         canvas.restore();
     }
 
-
-
 }

@@ -38,7 +38,7 @@ public class NowPlayingCoverView extends View {
     private int bIsDrawSuccess;
 
     // Prepare high quality bitmapCover[0] for cover and low bitmapCover[1] for blur
-    int coverSize = 630;
+    int coverSize = 660;
     int zipMultiple = 15;
     int lowCoverSize = coverSize/zipMultiple;
     int lowCoverTransfer = coverSize/20;
