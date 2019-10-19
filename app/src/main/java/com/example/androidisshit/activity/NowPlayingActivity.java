@@ -1,21 +1,31 @@
 package com.example.androidisshit.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.widget.ImageView;
-import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.target.ImageViewTarget;
+import com.bumptech.glide.request.transition.Transition;
+import com.example.androidisshit.component.NowPlayingCoverView;
 import com.example.androidisshit.component.VerticalTextView;
 import com.example.androidisshit.utils.MusicUtils;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import com.example.androidisshit.R;
+import com.example.androidisshit.utils.NowPlayingUtils;
 
-public class NowPlaying extends AppCompatActivity {
+import java.io.FileNotFoundException;
+
+public class NowPlayingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,17 +34,13 @@ public class NowPlaying extends AppCompatActivity {
         Intent intent=getIntent();
         String title = intent.getStringExtra("title");
         String artist = intent.getStringExtra("artist");
-        Long uri = intent.getLongExtra("uri",0);
+        Long id = intent.getLongExtra("id",0);
+
+        NowPlayingCoverView nowPlayingCoverView = findViewById(R.id.nowPlay_cover);
+        nowPlayingCoverView.setCoverUri(MusicUtils.getArtUri(id));
+
         VerticalTextView verticalTextView = findViewById(R.id.nowPlay_title);
         verticalTextView.setText(title);
 
-        ImageView imageView = findViewById(R.id.nowPlay_albumImage);
-        Glide.with(this).load(MusicUtils.getArtUri(uri))
-                .fitCenter()//need fix
-                .placeholder(R.mipmap.test_load)
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(imageView);
-
     }
-
 }

@@ -5,10 +5,10 @@
               android:layout_height="180dp"
               android:clickable="true"
               android:focusable="true">
-    <com.example.androidisshit.adapter.ParallaxImageView
+    <com.example.androidisshit.component.ParallaxImageView
             android:id="@+id/cover_img"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="180dp"/>
     <TextView
             android:id="@+id/cover_title"
             android:gravity="center"

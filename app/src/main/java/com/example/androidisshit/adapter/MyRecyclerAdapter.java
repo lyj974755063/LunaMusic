@@ -1,6 +1,7 @@
 package com.example.androidisshit.adapter;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.View;
@@ -52,8 +53,9 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
             //set album art
             Glide.with(context)
                     .load(MusicUtils.getArtUri(album.getAlbumId()))
-                    .fitCenter()//need fix
-                    .placeholder(R.mipmap.test_load)
+                    //.fitCenter()
+                    //.placeholder(R.mipmap.test_load) //case some size issue
+                    //.override(350)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(((ViewHolder)viewHolder).getBackgroundImage());
 
@@ -64,7 +66,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
                         Map<String,Object> map = new HashMap<String, Object>();
                         map.put("title", album.getAlbumTitle());
                         map.put("artist",album.getAlbumArtist());
-                        map.put("uri",album.getAlbumId());
+                        map.put("id",album.getAlbumId());
                         itemClickListener.onItemClick(viewHolder.itemView, position, map);
                     }
                 });

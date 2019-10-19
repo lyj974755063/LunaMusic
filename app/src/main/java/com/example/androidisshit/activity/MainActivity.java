@@ -1,18 +1,11 @@
 package com.example.androidisshit.activity;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.AbsListView;
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.Glide;
-import com.example.androidisshit.adapter.ParallaxRecyclerView;
+import com.example.androidisshit.component.ParallaxRecyclerView;
 import com.example.androidisshit.R;
 import com.example.androidisshit.adapter.MyRecyclerAdapter;
-import com.example.androidisshit.entity.Song;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,8 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.Map;
-
-import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,13 +37,12 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.putExtra("title", (String) data.get("title"));
                 intent.putExtra("artist", (String) data.get("artist"));
-                intent.putExtra("uri", (Long) data.get("uri"));
-                intent.setClass(MainActivity.this,NowPlaying.class);
+                intent.putExtra("id", (Long) data.get("id"));
+                intent.setClass(MainActivity.this, NowPlayingActivity.class);
                 startActivity(intent);
             }
         });
 
-                /*
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        */
     }
 
     @Override

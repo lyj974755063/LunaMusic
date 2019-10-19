@@ -1,8 +1,9 @@
-package com.example.androidisshit.adapter;
+package com.example.androidisshit.component;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.androidisshit.adapter.ParallaxViewHolder;
 
 /**
  * Created by yahyabayramoglu on 26/04/15.

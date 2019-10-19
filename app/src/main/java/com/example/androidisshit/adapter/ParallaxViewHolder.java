@@ -2,6 +2,7 @@ package com.example.androidisshit.adapter;
 
 import android.view.View;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.androidisshit.component.ParallaxImageView;
 
 /**
  * Created by yahyabayramoglu on 15/04/15.

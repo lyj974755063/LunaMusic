@@ -1,4 +1,4 @@
-package com.example.androidisshit.adapter;
+package com.example.androidisshit.component;
 
 import android.content.Context;
 import android.content.res.TypedArray;
