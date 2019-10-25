@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MusicUtils {
-    final static int EXCLUDE_DURATION = 40;
+    private final static int EXCLUDE_DURATION = 40;
 
     public static List<Song> getAllMusic(Context context) {
         List<Song> songList = new ArrayList<>();
