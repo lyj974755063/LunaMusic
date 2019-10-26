@@ -1,13 +1,22 @@
 <androidx.preference.PreferenceScreen
         xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <SwitchPreference
-            android:key="theme"
-            android:title="Dark Mod"
-            android:summary="Click to switch on or off"
-            android:defaultValue="false"/>
-
-    <Preference
-            android:key="about"
-            app:title="About"
-            android:summary="Designed by Luckily"/>
+    <PreferenceCategory
+            android:title="Preference">
+        <SwitchPreference
+                android:key="theme"
+                android:title="Dark Mod"
+                android:summary="Click to switch on or off"
+                android:defaultValue="false"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+            android:title="Info">
+        <Preference
+                android:key="version"
+                app:title="Version"
+                android:summary="alpha 0.5"/>
+        <Preference
+                android:key="about"
+                app:title="About"
+                android:summary="Designed by Luckily"/>
+    </PreferenceCategory>
 </androidx.preference.PreferenceScreen>

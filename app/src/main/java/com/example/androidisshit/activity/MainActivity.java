@@ -4,10 +4,14 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.*;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Interpolator;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.androidisshit.component.ParallaxRecyclerView;
 import com.example.androidisshit.R;
 import com.example.androidisshit.adapter.MyRecyclerAdapter;
+import com.example.androidisshit.entity.Album;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +35,28 @@ public class MainActivity extends AppCompatActivity {
         parallaxRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         parallaxRecyclerView.setHasFixedSize(true);
         parallaxRecyclerView.setAdapter(new MyRecyclerAdapter(this));
+
+        parallaxRecyclerView.getViewTreeObserver().addOnPreDrawListener(
+                new ViewTreeObserver.OnPreDrawListener() {
+
+                    @Override
+                    public boolean onPreDraw() {
+                        parallaxRecyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
+
+                        for (int i = 0; i < parallaxRecyclerView.getChildCount(); i++) {
+                            View v = parallaxRecyclerView.getChildAt(i);
+                            v.setAlpha(0.0f);
+                            v.animate().alpha(1.0f)
+                                    .setInterpolator(new AccelerateDecelerateInterpolator())
+                                    .setDuration(400)
+                                    .setStartDelay(i * 50)
+                                    .start();
+                        }
+
+                        return true;
+                    }
+                });
+
         ((MyRecyclerAdapter) parallaxRecyclerView.getAdapter()).setOnItemClickListener(new MyRecyclerAdapter.RecycleViewOnItemClickListener() {
             @Override
             public void onItemClick(View view, int position, Map data) {
@@ -38,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("title", (String) data.get("title"));
                 intent.putExtra("artist", (String) data.get("artist"));
                 intent.putExtra("id", (Long) data.get("id"));
+                intent.putExtra("album", (Album)data.get("album"));
                 intent.setClass(MainActivity.this, NowPlayingActivity.class);
                 startActivity(intent);
             }
