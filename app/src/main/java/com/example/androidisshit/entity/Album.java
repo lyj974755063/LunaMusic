@@ -9,6 +9,7 @@ import android.graphics.Color;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.palette.graphics.Palette;
+import androidx.palette.graphics.Target;
 
 public class Album implements Serializable {
     private List<Song> albumSongs;
@@ -111,23 +112,60 @@ public class Album implements Serializable {
     }
 
     public void calculateColors(Bitmap bitmap, @NonNull final CalculateListener calculateListener) {
-        Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+        Palette.Builder pBuilder = new Palette.Builder(bitmap);
+        /*
+        Palette.Filter filter =new Palette.Filter() {
+            @Override
+            public boolean isAllowed(int rgb, @NonNull float[] hsl) {
+                System.out.println(hsl[0]+","+hsl[1]+","+hsl[2]);
+                if (hsl[1] <= 0.5 && hsl[2] >= 0.33) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        };
+        pBuilder.addFilter(filter);
+
+        Target.Builder tBuilder = new Target.Builder();
+
+        final Target STarget = tBuilder
+                .setPopulationWeight(0.0f)
+                .setSaturationWeight(1.0f)
+                .setLightnessWeight(0.0f)
+                .setExclusive(false)
+                .setMinimumLightness(0.2f)
+                .setTargetLightness(1.0f)
+                .setMaximumLightness(1.0f)
+                .setMinimumSaturation(0.1f)
+                .setTargetSaturation(1.0f)
+                .setMaximumSaturation(1.0f)
+                .build();
+
+        final Target LTarget = tBuilder
+                .setPopulationWeight(0.0f)
+                .setSaturationWeight(0.0f)
+                .setLightnessWeight(1.0f)
+                .setExclusive(false)
+                .setMinimumLightness(0.1f)
+                .setTargetLightness(1.0f)
+                .setMaximumLightness(1.0f)
+                .setMinimumSaturation(0.2f)
+                .setTargetSaturation(1.0f)
+                .setMaximumSaturation(1.0f)
+                .build();
+        */
+        pBuilder
+                .maximumColorCount(50)
+                .clearFilters();
+
+        pBuilder.generate(new Palette.PaletteAsyncListener() {
             @Override
             public void onGenerated(@Nullable Palette palette) {
                 int color1 = 0, color2 = 0;
 
-                Palette.Swatch swatch = palette.getLightVibrantSwatch();
-                if (swatch==null) {
-                    swatch = palette.getVibrantSwatch();
-                    if (swatch==null) {
-                        swatch = palette.getDominantSwatch();
-                    }
-                }
-
-                if (swatch!=null){
-                    color1 = swatch.getRgb();
-                    color2 = swatch.getTitleTextColor();
-                }
+                color1 = palette.getVibrantColor(Color.rgb(30,30,30));
+                color2 = palette.getMutedColor(Color.GRAY);
 
                 primaryColor = color1;
                 secondColor = color2;

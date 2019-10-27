@@ -51,7 +51,7 @@
             android:text="@string/nowPlaying_artist"
             android:textSize="30sp"
             android:layout_width="112dp"
-            android:layout_height="113dp"
+            android:layout_height="251dp"
             app:layout_constraintStart_toStartOf="@+id/nowPlay_button_start"
             android:layout_marginStart="64dp" android:layout_marginTop="56dp"
             app:layout_constraintTop_toTopOf="@+id/nowPlay_button_start"/>

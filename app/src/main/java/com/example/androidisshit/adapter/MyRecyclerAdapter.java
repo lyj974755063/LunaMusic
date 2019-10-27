@@ -69,7 +69,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
             if (album.getPrimaryColor()==0) {
                 Glide.with(context)
                         .load(MusicUtils.getArtUri(album.getAlbumId()))
-                        .override(25)
+                        .override(50)
                         .into(new CustomTarget<Drawable>() {
                             @Override
                             public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
@@ -77,10 +77,10 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
                                 album.calculateColors(Utils.D2B(resource), new Album.CalculateListener() {
                                     @Override
                                     public void doSomething(@Nullable int color1, int color2) {
-                                        ColorDrawable colorDrawable = new ColorDrawable(color1);
+                                        ColorDrawable colorDrawable = new ColorDrawable(color2);
                                         colorDrawable.setAlpha(alpha);
                                         ((ViewHolder) viewHolder).getBackgroundImage().setForeground(colorDrawable);
-                                        ((ViewHolder) viewHolder).getTextView().setTextColor(color2);
+                                        ((ViewHolder) viewHolder).getTextView().setTextColor(color1);
                                     }
                                 });
                             }
@@ -91,10 +91,10 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
                             }
                         });
             } else {
-                ColorDrawable colorDrawable = new ColorDrawable(album.getPrimaryColor());
+                ColorDrawable colorDrawable = new ColorDrawable(album.getSecondColor());
                 colorDrawable.setAlpha(alpha);
                 ((ViewHolder) viewHolder).getBackgroundImage().setForeground(colorDrawable);
-                ((ViewHolder) viewHolder).getTextView().setTextColor(album.getSecondColor());
+                ((ViewHolder) viewHolder).getTextView().setTextColor(album.getPrimaryColor());
             }
 
             //set album title
