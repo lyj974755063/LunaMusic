@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.palette.graphics.Palette;
-import androidx.palette.graphics.Target;
+import com.example.androidisshit.utils.ColorUtils.MediaNotificationProcessor;
 
 public class Album implements Serializable {
     private List<Song> albumSongs;
@@ -111,71 +111,20 @@ public class Album implements Serializable {
         return secondColor;
     }
 
-    public void calculateColors(Bitmap bitmap, @NonNull final CalculateListener calculateListener) {
-        Palette.Builder pBuilder = new Palette.Builder(bitmap);
-        /*
-        Palette.Filter filter =new Palette.Filter() {
+    public void calculateColors(Drawable drawable, @NonNull final CalculateListener calculateListener) {
+        MediaNotificationProcessor processor = new MediaNotificationProcessor();
+        processor.getPaletteAsync(drawable, new MediaNotificationProcessor.OnPaletteLoadedListener() {
             @Override
-            public boolean isAllowed(int rgb, @NonNull float[] hsl) {
-                System.out.println(hsl[0]+","+hsl[1]+","+hsl[2]);
-                if (hsl[1] <= 0.5 && hsl[2] >= 0.33) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        };
-        pBuilder.addFilter(filter);
-
-        Target.Builder tBuilder = new Target.Builder();
-
-        final Target STarget = tBuilder
-                .setPopulationWeight(0.0f)
-                .setSaturationWeight(1.0f)
-                .setLightnessWeight(0.0f)
-                .setExclusive(false)
-                .setMinimumLightness(0.2f)
-                .setTargetLightness(1.0f)
-                .setMaximumLightness(1.0f)
-                .setMinimumSaturation(0.1f)
-                .setTargetSaturation(1.0f)
-                .setMaximumSaturation(1.0f)
-                .build();
-
-        final Target LTarget = tBuilder
-                .setPopulationWeight(0.0f)
-                .setSaturationWeight(0.0f)
-                .setLightnessWeight(1.0f)
-                .setExclusive(false)
-                .setMinimumLightness(0.1f)
-                .setTargetLightness(1.0f)
-                .setMaximumLightness(1.0f)
-                .setMinimumSaturation(0.2f)
-                .setTargetSaturation(1.0f)
-                .setMaximumSaturation(1.0f)
-                .build();
-        */
-        pBuilder
-                .maximumColorCount(50)
-                .clearFilters();
-
-        pBuilder.generate(new Palette.PaletteAsyncListener() {
-            @Override
-            public void onGenerated(@Nullable Palette palette) {
-                int color1 = 0, color2 = 0;
-
-                color1 = palette.getVibrantColor(Color.rgb(30,30,30));
-                color2 = palette.getMutedColor(Color.GRAY);
-
-                primaryColor = color1;
-                secondColor = color2;
-                calculateListener.doSomething(color1,color2);
+            public void onPaletteLoaded(MediaNotificationProcessor mediaNotificationProcessor) {
+                primaryColor = mediaNotificationProcessor.getPrimaryTextColor();
+                secondColor = mediaNotificationProcessor.getBackgroundColor();
+                calculateListener.doSomething();
             }
         });
     }
 
     public interface CalculateListener {
-        void doSomething(@Nullable int color1, int color2);
+        void doSomething();
     }
 
 }

@@ -74,13 +74,13 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
                             @Override
                             public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                                 System.out.println("CalculateColor+1");
-                                album.calculateColors(Utils.D2B(resource), new Album.CalculateListener() {
+                                album.calculateColors(resource, new Album.CalculateListener() {
                                     @Override
-                                    public void doSomething(@Nullable int color1, int color2) {
-                                        ColorDrawable colorDrawable = new ColorDrawable(color2);
+                                    public void doSomething() {
+                                        ColorDrawable colorDrawable = new ColorDrawable(album.getSecondColor());
                                         colorDrawable.setAlpha(alpha);
                                         ((ViewHolder) viewHolder).getBackgroundImage().setForeground(colorDrawable);
-                                        ((ViewHolder) viewHolder).getTextView().setTextColor(color1);
+                                        ((ViewHolder) viewHolder).getTextView().setTextColor(album.getPrimaryColor());
                                     }
                                 });
                             }
