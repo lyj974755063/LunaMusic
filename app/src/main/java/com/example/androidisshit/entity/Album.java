@@ -4,11 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.palette.graphics.Palette;
+import androidx.core.graphics.ColorUtils;
 import com.example.androidisshit.utils.ColorUtils.MediaNotificationProcessor;
 
 public class Album implements Serializable {
@@ -18,6 +16,9 @@ public class Album implements Serializable {
     private long albumId;
     private int primaryColor;
     private int secondColor;
+    private boolean bIsTextLight;
+
+    private int backgroundColor;
 
     public static List<Album> AllAlbums;
 
@@ -111,13 +112,19 @@ public class Album implements Serializable {
         return secondColor;
     }
 
+    public int getBackgroundColor() { return backgroundColor; }
+
+    public boolean isbIsTextLight() { return bIsTextLight; }
+
     public void calculateColors(Drawable drawable, @NonNull final CalculateListener calculateListener) {
         MediaNotificationProcessor processor = new MediaNotificationProcessor();
         processor.getPaletteAsync(drawable, new MediaNotificationProcessor.OnPaletteLoadedListener() {
             @Override
             public void onPaletteLoaded(MediaNotificationProcessor mediaNotificationProcessor) {
                 primaryColor = mediaNotificationProcessor.getPrimaryTextColor();
-                secondColor = mediaNotificationProcessor.getBackgroundColor();
+                secondColor = mediaNotificationProcessor.getSecondaryTextColor();
+                backgroundColor = mediaNotificationProcessor.getBackgroundColor();
+                bIsTextLight = ColorUtils.calculateLuminance(backgroundColor) > ColorUtils.calculateLuminance(primaryColor);
                 calculateListener.doSomething();
             }
         });

@@ -1,7 +1,6 @@
 package com.example.androidisshit.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import android.view.View;
@@ -9,6 +8,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import com.example.androidisshit.component.NowPlayingCoverView;
 import com.example.androidisshit.component.VerticalTextView;
 import com.example.androidisshit.entity.Album;
@@ -32,6 +32,15 @@ public class NowPlayingActivity extends AppCompatActivity {
         Long id = intent.getLongExtra("id",0);
         Album album = (Album) intent.getSerializableExtra("album");
 
+        if (!album.isbIsTextLight()) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+        } else {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+
+        ConstraintLayout constraintLayout = findViewById(R.id.nowPlay_background);
+        constraintLayout.setBackgroundColor(album.getBackgroundColor());
+
         NowPlayingCoverView nowPlayingCoverView = findViewById(R.id.nowPlay_cover);
         nowPlayingCoverView.setCoverUri(MusicUtils.getArtUri(id));
 
@@ -47,4 +56,5 @@ public class NowPlayingActivity extends AppCompatActivity {
         button.setTextColor(album.getPrimaryColor());
 
     }
+    
 }

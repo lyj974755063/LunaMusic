@@ -77,7 +77,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
                                 album.calculateColors(resource, new Album.CalculateListener() {
                                     @Override
                                     public void doSomething() {
-                                        ColorDrawable colorDrawable = new ColorDrawable(album.getSecondColor());
+                                        ColorDrawable colorDrawable = new ColorDrawable(album.getBackgroundColor());
                                         colorDrawable.setAlpha(alpha);
                                         ((ViewHolder) viewHolder).getBackgroundImage().setForeground(colorDrawable);
                                         ((ViewHolder) viewHolder).getTextView().setTextColor(album.getPrimaryColor());
@@ -91,7 +91,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
                             }
                         });
             } else {
-                ColorDrawable colorDrawable = new ColorDrawable(album.getSecondColor());
+                ColorDrawable colorDrawable = new ColorDrawable(album.getBackgroundColor());
                 colorDrawable.setAlpha(alpha);
                 ((ViewHolder) viewHolder).getBackgroundImage().setForeground(colorDrawable);
                 ((ViewHolder) viewHolder).getTextView().setTextColor(album.getPrimaryColor());
