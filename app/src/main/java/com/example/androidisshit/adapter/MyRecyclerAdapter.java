@@ -1,17 +1,12 @@
 package com.example.androidisshit.adapter;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,22 +19,20 @@ import com.example.androidisshit.R;
 import com.example.androidisshit.entity.Album;
 import com.example.androidisshit.entity.Song;
 import com.example.androidisshit.utils.MusicUtils;
-import com.example.androidisshit.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 public class MyRecyclerAdapter extends RecyclerView.Adapter {
 
     private Context context;
     private LayoutInflater inflater;
-    private List<Album> albums;
+    private ArrayList<Album> albums;
 
     private RecycleViewOnItemClickListener itemClickListener;
     public interface RecycleViewOnItemClickListener {
-        void onItemClick(View view, int position, Map data);
+        void onItemClick(View view, int position, ArrayList data);
     }
     public void setOnItemClickListener(RecycleViewOnItemClickListener onItemClickListener){
         this.itemClickListener = onItemClickListener;
@@ -69,7 +62,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
             if (album.getPrimaryColor()==0) {
                 Glide.with(context)
                         .load(MusicUtils.getArtUri(album.getAlbumId()))
-                        .override(50)
+                        .override(150)
                         .into(new CustomTarget<Drawable>() {
                             @Override
                             public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
@@ -112,12 +105,8 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Map<String,Object> map = new HashMap<String, Object>();
-                        map.put("title", album.getAlbumTitle());
-                        map.put("artist",album.getAlbumArtist());
-                        map.put("id",album.getAlbumId());
-                        map.put("album",album);
-                        itemClickListener.onItemClick(viewHolder.itemView, position, map);
+                        ArrayList list = album.getAlbumSongs();
+                        itemClickListener.onItemClick(viewHolder.itemView, position, list);
                     }
                 });
             }

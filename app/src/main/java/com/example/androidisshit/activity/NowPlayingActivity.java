@@ -1,5 +1,6 @@
 package com.example.androidisshit.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -9,14 +10,24 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.viewpager.widget.ViewPager;
+import com.example.androidisshit.adapter.NowPlayingAdapter;
 import com.example.androidisshit.component.NowPlayingCoverView;
+import com.example.androidisshit.component.ParallaxPagerTransformer;
 import com.example.androidisshit.component.VerticalTextView;
 import com.example.androidisshit.entity.Album;
+import com.example.androidisshit.entity.Song;
 import com.example.androidisshit.utils.MusicUtils;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.androidisshit.R;
 
+import java.util.ArrayList;
+
+import static androidx.fragment.app.FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
+
 public class NowPlayingActivity extends AppCompatActivity {
+    Button startButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,34 +38,21 @@ public class NowPlayingActivity extends AppCompatActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
         Intent intent=getIntent();
-        String title = intent.getStringExtra("title");
-        String artist = intent.getStringExtra("artist");
-        Long id = intent.getLongExtra("id",0);
-        Album album = (Album) intent.getSerializableExtra("album");
+        ArrayList<Song> playList = (ArrayList<Song>) intent.getSerializableExtra("playList");
 
-        if (!album.isbIsTextLight()) {
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-        } else {
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        ViewPager viewPager = findViewById(R.id.nowPlay_viewPager);
+        NowPlayingAdapter adapter = new NowPlayingAdapter(fragmentManager,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, playList);
+//        viewPager.setPadding(-64,0,64,0);
+        //viewPager.setClipToPadding(false);
+        //viewPager.setPageMargin(30);
+        viewPager.setOffscreenPageLimit(2);
+        viewPager.setAdapter(adapter);
+        viewPager.setPageTransformer(true,
+                new ParallaxPagerTransformer()
+                        .addViewToParallax(new ParallaxPagerTransformer.ParallaxTransformInformation(R.id.nowPlay_title,2f,2f))
+                        .addViewToParallax(new ParallaxPagerTransformer.ParallaxTransformInformation(R.id.nowPlay_artist,3f,3f)));
 
-        ConstraintLayout constraintLayout = findViewById(R.id.nowPlay_background);
-        constraintLayout.setBackgroundColor(album.getBackgroundColor());
-
-        NowPlayingCoverView nowPlayingCoverView = findViewById(R.id.nowPlay_cover);
-        nowPlayingCoverView.setCoverUri(MusicUtils.getArtUri(id));
-
-        VerticalTextView verticalTextView = findViewById(R.id.nowPlay_title);
-        verticalTextView.setText(title.toUpperCase());
-        verticalTextView.setTextColor(album.getSecondColor());
-
-        TextView artistTextView = findViewById(R.id.nowPlay_artist);
-        artistTextView.setTextColor(album.getSecondColor());
-        artistTextView.setText(album.getAlbumArtist()+"の世界");
-
-        Button button = findViewById(R.id.nowPlay_button_start);
-        button.setTextColor(album.getPrimaryColor());
-
+        startButton = findViewById(R.id.nowPlay_button_start);
     }
-    
 }

@@ -7,17 +7,15 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
-import com.bumptech.glide.Glide;
 import com.example.androidisshit.entity.Song;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MusicUtils {
     private final static int EXCLUDE_DURATION = 40;
 
-    public static List<Song> getAllMusic(Context context) {
-        List<Song> songList = new ArrayList<>();
+    public static ArrayList<Song> getAllMusic(Context context) {
+        ArrayList<Song> songList = new ArrayList<>();
         Cursor cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
                 , null, null, null, MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
 

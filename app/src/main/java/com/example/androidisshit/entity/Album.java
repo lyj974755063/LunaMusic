@@ -10,17 +10,17 @@ import androidx.core.graphics.ColorUtils;
 import com.example.androidisshit.utils.ColorUtils.MediaNotificationProcessor;
 
 public class Album implements Serializable {
-    private List<Song> albumSongs;
+    private ArrayList<Song> albumSongs;
     private String albumTitle;
     private String albumArtist;
     private long albumId;
+
     private int primaryColor;
     private int secondColor;
     private boolean bIsTextLight;
-
     private int backgroundColor;
 
-    public static List<Album> AllAlbums;
+    public static ArrayList<Album> AllAlbums;
 
     /*
     public Album(List<Song> songs) {
@@ -43,7 +43,7 @@ public class Album implements Serializable {
         secondColor = 0;
     }
 
-    public List<Song> getAlbumSongs() {
+    public ArrayList<Song> getAlbumSongs() {
         return albumSongs;
     }
 
@@ -64,8 +64,8 @@ public class Album implements Serializable {
         }
     }
 
-    public static List<Album> getAllAlbums(List<Song> allSongs) {
-        List<Album> tAlbums = new ArrayList<>();
+    public static ArrayList<Album> getAllAlbums(List<Song> allSongs) {
+        ArrayList<Album> tAlbums = new ArrayList<>();
 
         for (int i = 0; i < allSongs.size(); i++) {
 
@@ -126,6 +126,9 @@ public class Album implements Serializable {
                 backgroundColor = mediaNotificationProcessor.getBackgroundColor();
                 bIsTextLight = ColorUtils.calculateLuminance(backgroundColor) > ColorUtils.calculateLuminance(primaryColor);
                 calculateListener.doSomething();
+                for (Song song : albumSongs) {
+                    song.setColors(primaryColor,secondColor,backgroundColor,bIsTextLight);
+                }
             }
         });
     }

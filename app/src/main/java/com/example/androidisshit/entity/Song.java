@@ -1,7 +1,9 @@
 package com.example.androidisshit.entity;
 
+import android.graphics.Color;
+
 import java.io.Serializable;
-import java.util.List;
+import java.util.ArrayList;
 
 public class Song implements Serializable {
     private String title;//歌曲名
@@ -13,9 +15,19 @@ public class Song implements Serializable {
     private String albumTitle;//专辑名
     private long id;//歌曲id
 
-    public static List<Song> allSongs;
+    private int primaryColor;
+    private int secondColor;
+    private boolean bIsTextLight;
+    private int backgroundColor;
 
-    public Song(){};
+    public static ArrayList<Song> allSongs;
+
+    public Song(){
+        primaryColor = Color.parseColor("#000000");
+        secondColor = Color.parseColor("#607B8B");
+        bIsTextLight = false;
+        backgroundColor = Color.parseColor("#FFFFFF");
+    };
 
     public long getAlbumId()
     {
@@ -83,5 +95,28 @@ public class Song implements Serializable {
 
     public void setAlbumTitle(String albumTitle) {
         this.albumTitle = albumTitle;
+    }
+
+    public int getPrimaryColor() {
+        return primaryColor;
+    }
+
+    public int getSecondColor() {
+        return secondColor;
+    }
+
+    public boolean isbIsTextLight() {
+        return bIsTextLight;
+    }
+
+    public int getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public void setColors(int primaryColor,int secondColor, int backgroundColor, boolean bIsTextLight) {
+        this.primaryColor = primaryColor;
+        this.secondColor = secondColor;
+        this.backgroundColor = backgroundColor;
+        this.bIsTextLight = bIsTextLight;
     }
 }

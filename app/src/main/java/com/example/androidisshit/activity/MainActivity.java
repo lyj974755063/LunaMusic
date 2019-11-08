@@ -12,11 +12,14 @@ import com.example.androidisshit.component.ParallaxRecyclerView;
 import com.example.androidisshit.R;
 import com.example.androidisshit.adapter.MyRecyclerAdapter;
 import com.example.androidisshit.entity.Album;
+import com.example.androidisshit.entity.Song;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -59,12 +62,10 @@ public class MainActivity extends AppCompatActivity {
 
         ((MyRecyclerAdapter) parallaxRecyclerView.getAdapter()).setOnItemClickListener(new MyRecyclerAdapter.RecycleViewOnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position, Map data) {
+            public void onItemClick(View view, int position, ArrayList data) {
                 Intent intent = new Intent();
-                intent.putExtra("title", (String) data.get("title"));
-                intent.putExtra("artist", (String) data.get("artist"));
-                intent.putExtra("id", (Long) data.get("id"));
-                intent.putExtra("album", (Album)data.get("album"));
+                ArrayList<Song> songs = data;
+                intent.putExtra("playList", songs);
                 intent.setClass(MainActivity.this, NowPlayingActivity.class);
                 startActivity(intent);
             }
