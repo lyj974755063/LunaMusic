@@ -63,7 +63,7 @@ public class Album implements Serializable {
 
             // move song[i] to tAlbum as a new album
             if (pS==0) {
-                System.out.println("MYFALG_ONCE");
+                //System.out.println("MYFALG_ONCE");
                 tAlbums.add(new Album(allSongs.get(pS)));
                 pS++;
             }
@@ -71,14 +71,14 @@ public class Album implements Serializable {
             if (!(pS < allSongs.size()))
                 break;
 
-            System.out.println("******Start*******");
+            //System.out.println("******Start*******");
             for (int pA = 0; pA < tAlbums.size(); pA++) {
                 if (tAlbums.get(pA).addSongToAlbum(allSongs.get(pS))) {
                     continue outer;
                 }
             }
             tAlbums.add(new Album(allSongs.get(pS)));
-            System.out.println("******END*******");
+            //System.out.println("******END*******");
         }
         return tAlbums;
     }
@@ -95,10 +95,10 @@ public class Album implements Serializable {
     private static boolean checkCanAddTargetAlbum(Song song, Album target) {
         if (song!=null&&target!=null){
             if (target.getAlbumSongs().isEmpty()) {
-                System.out.println("MYFLAG_target.getAlbumSongs().isEmpty()_true");
+                //System.out.println("MYFLAG_target.getAlbumSongs().isEmpty()_true");
                 return true;
             } else {
-                System.out.println("MYFLAG_COMPARE<"+song.getAlbumTitle()+">AND<"+target.getAlbumTitle()+">");
+                //System.out.println("MYFLAG_COMPARE<"+song.getAlbumTitle()+">AND<"+target.getAlbumTitle()+">");
                 if (song.getAlbumTitle().equals(target.getAlbumTitle())) {
                     return true;
                 } else {
@@ -106,7 +106,7 @@ public class Album implements Serializable {
                 }
             }
         }else{
-            System.out.println("MYFLAG_song!=null&&target!=null_true");
+            //System.out.println("MYFLAG_song!=null&&target!=null_true");
             return false;
         }
     }

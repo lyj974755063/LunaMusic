@@ -1,5 +1,6 @@
 package com.example.androidisshit.utils;
 
+import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
@@ -17,15 +18,15 @@ public class MusicUtils {
     public static ArrayList<Song> getAllMusic(Context context) {
         ArrayList<Song> songList = new ArrayList<>();
         Cursor cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-                , null, null, null, MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
+                , null, MediaStore.Audio.Media.DURATION + ">= 60000", null, MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
 
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 Song song = new Song();
                 song.setDuration(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)));
-                if (!checkCanInclude(song.getDuration())) {
-                    continue;
-                }
+//                if (!checkCanInclude(song.getDuration())) {
+//                    continue;
+//                }
                 song.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)));
                 song.setId(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)));
                 song.setArtist(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)));
