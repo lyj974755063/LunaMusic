@@ -2,7 +2,6 @@ package com.example.androidisshit.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 import android.graphics.drawable.Drawable;
 import androidx.annotation.NonNull;
@@ -41,6 +40,8 @@ public class Album implements Serializable {
         albumId = albumSongs.get(0).getAlbumId();
         primaryColor = 0;
         secondColor = 0;
+        bIsTextLight = false;
+        backgroundColor = 0;
     }
 
     public ArrayList<Song> getAlbumSongs() {
@@ -55,6 +56,33 @@ public class Album implements Serializable {
         return albumArtist;
     }
 
+    public static ArrayList<Album> getAllAlbums(ArrayList<Song> allSongs) {
+        ArrayList<Album> tAlbums = new ArrayList<>();
+
+        outer: for (int pS = 0; pS < allSongs.size(); pS++) {
+
+            // move song[i] to tAlbum as a new album
+            if (pS==0) {
+                System.out.println("MYFALG_ONCE");
+                tAlbums.add(new Album(allSongs.get(pS)));
+                pS++;
+            }
+
+            if (!(pS < allSongs.size()))
+                break;
+
+            System.out.println("******Start*******");
+            for (int pA = 0; pA < tAlbums.size(); pA++) {
+                if (tAlbums.get(pA).addSongToAlbum(allSongs.get(pS))) {
+                    continue outer;
+                }
+            }
+            tAlbums.add(new Album(allSongs.get(pS)));
+            System.out.println("******END*******");
+        }
+        return tAlbums;
+    }
+
     private boolean addSongToAlbum(Song song) {
         if (checkCanAddTargetAlbum(song,this)) {
             this.albumSongs.add(song);
@@ -64,31 +92,13 @@ public class Album implements Serializable {
         }
     }
 
-    public static ArrayList<Album> getAllAlbums(List<Song> allSongs) {
-        ArrayList<Album> tAlbums = new ArrayList<>();
-
-        for (int i = 0; i < allSongs.size(); i++) {
-
-            // move song[i] to tAlbum as a new album
-            tAlbums.add(new Album(allSongs.get(i)));
-            i++;
-            if (!(i < allSongs.size()))
-                break;
-
-            for (int j = 0; j < tAlbums.size(); j++) {
-                if (tAlbums.get(j).addSongToAlbum(allSongs.get(i))) {
-                    break;
-                }
-            }
-        }
-        return tAlbums;
-    }
-
     private static boolean checkCanAddTargetAlbum(Song song, Album target) {
         if (song!=null&&target!=null){
             if (target.getAlbumSongs().isEmpty()) {
+                System.out.println("MYFLAG_target.getAlbumSongs().isEmpty()_true");
                 return true;
             } else {
+                System.out.println("MYFLAG_COMPARE<"+song.getAlbumTitle()+">AND<"+target.getAlbumTitle()+">");
                 if (song.getAlbumTitle().equals(target.getAlbumTitle())) {
                     return true;
                 } else {
@@ -96,6 +106,7 @@ public class Album implements Serializable {
                 }
             }
         }else{
+            System.out.println("MYFLAG_song!=null&&target!=null_true");
             return false;
         }
     }
@@ -123,6 +134,7 @@ public class Album implements Serializable {
             public void onPaletteLoaded(MediaNotificationProcessor mediaNotificationProcessor) {
                 primaryColor = mediaNotificationProcessor.getPrimaryTextColor();
                 secondColor = mediaNotificationProcessor.getSecondaryTextColor();
+                secondColor = ColorUtils.setAlphaComponent(secondColor, 191);
                 backgroundColor = mediaNotificationProcessor.getBackgroundColor();
                 bIsTextLight = ColorUtils.calculateLuminance(backgroundColor) > ColorUtils.calculateLuminance(primaryColor);
                 calculateListener.doSomething();

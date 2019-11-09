@@ -48,6 +48,7 @@ public class NowPlayingActivity extends AppCompatActivity {
         //viewPager.setPageMargin(30);
         viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(adapter);
+
         viewPager.setPageTransformer(true,
                 new ParallaxPagerTransformer()
                         .addViewToParallax(new ParallaxPagerTransformer.ParallaxTransformInformation(R.id.nowPlay_title,2f,2f))
