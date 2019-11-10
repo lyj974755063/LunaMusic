@@ -38,10 +38,10 @@ public class Album implements Serializable {
         albumArtist = albumSongs.get(0).getArtist();
         albumTitle = albumSongs.get(0).getAlbumTitle();
         albumId = albumSongs.get(0).getAlbumId();
-        primaryColor = 0;
-        secondColor = 0;
-        bIsTextLight = false;
-        backgroundColor = 0;
+//        primaryColor = song.getPrimaryColor();
+//        secondColor = song.getSecondColor();
+//        bIsTextLight = song.isbIsTextLight();
+//        backgroundColor = song.getBackgroundColor();
     }
 
     public ArrayList<Song> getAlbumSongs() {
