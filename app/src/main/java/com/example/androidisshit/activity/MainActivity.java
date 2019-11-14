@@ -19,6 +19,7 @@ import com.example.androidisshit.R;
 import com.example.androidisshit.adapter.MyRecyclerAdapter;
 import com.example.androidisshit.entity.Album;
 import com.example.androidisshit.entity.Song;
+import com.example.androidisshit.service.MusicService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        startService(new Intent(this, MusicService.class));
 
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{
