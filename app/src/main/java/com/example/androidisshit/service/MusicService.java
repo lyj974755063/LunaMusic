@@ -129,7 +129,9 @@ public class MusicService extends Service {
             }
         }
 
-        public int getIndex() {return currentPlayingIndex;}
+        public int getCurrentPlayingIndex() {return currentPlayingIndex;}
+
+        public int getPreparedIndex() {return preparedIndex;}
 
         public void iniPlayList(ArrayList<String> playList) {
             // initialize
@@ -221,8 +223,10 @@ public class MusicService extends Service {
             if (mediaPlayer != null && preparedIndex >=0 && preparedIndex < playList.size()) {
                 if ((preparedIndex + 1) < playList.size()) {
                     ++preparedIndex;
-                    if (mediaPlayer.isPlaying()) {
-                        handleMusic();
+                    if (isSameList()) {
+                        if (mediaPlayer.isPlaying()) {
+                            handleMusic();
+                        }
                     }
                 }
             }
@@ -235,8 +239,10 @@ public class MusicService extends Service {
             if (mediaPlayer != null && preparedIndex >=0 && preparedIndex < playList.size()) {
                 if ((preparedIndex - 1) >= 0) {
                     --preparedIndex;
-                    if (mediaPlayer.isPlaying()) {
-                        handleMusic();
+                    if (isSameList()) {
+                        if (mediaPlayer.isPlaying()) {
+                            handleMusic();
+                        }
                     }
                 }
             }

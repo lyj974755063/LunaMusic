@@ -72,15 +72,13 @@ public class NowPlayingActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                int index = binder.getIndex();
-                if (binder.isSameList()) {
-                    if (index < position) {
-                        binder.nextMusic();
-                    } else if (index > position) {
-                        binder.preciousMusic();
-                    }
+                int index;
+                index = binder.getPreparedIndex();
+                if (index < position) {
+                    binder.nextMusic();
+                } else if (index > position) {
+                    binder.preciousMusic();
                 }
-
             }
 
             @Override
