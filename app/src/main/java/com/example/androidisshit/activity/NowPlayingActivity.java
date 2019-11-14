@@ -1,10 +1,8 @@
 package com.example.androidisshit.activity;
 
-import android.content.ComponentName;
-import android.content.Intent;
-import android.content.ServiceConnection;
+import android.content.*;
+import android.os.AsyncTask;
 import android.os.Bundle;
-
 import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
@@ -19,16 +17,15 @@ import com.example.androidisshit.entity.Song;
 import com.example.androidisshit.service.MusicService;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.androidisshit.R;
-
 import java.util.ArrayList;
-
 import static androidx.fragment.app.FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
 
 public class NowPlayingActivity extends AppCompatActivity {
-    Button startButton;
-    MusicService.MyBinder binder;
-    ArrayList<Song> playList;
-    ArrayList<String> paths;
+    private Button startButton;
+    private MusicService.MyBinder binder;
+    private ArrayList<Song> playList;
+    private ArrayList<String> paths;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +43,12 @@ public class NowPlayingActivity extends AppCompatActivity {
             System.out.println("MYFLAG_PATH_"+t.getPath());
         }
 
+        // register broadcast receiver
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("UPDATE_UI");
+        intentFilter.addAction("INITIAL_UI");
+        registerReceiver(updateUIReceiver, intentFilter);
+
         // bind service
         Intent serviceIntent = new Intent(this, MusicService.class);
         System.out.println("MYFLAG_bindService!");
@@ -53,7 +56,7 @@ public class NowPlayingActivity extends AppCompatActivity {
 
         // set viewPage and fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
-        ViewPager viewPager = findViewById(R.id.nowPlay_viewPager);
+        viewPager = findViewById(R.id.nowPlay_viewPager);
         NowPlayingAdapter adapter = new NowPlayingAdapter(fragmentManager,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, playList);
         viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(adapter);
@@ -61,13 +64,37 @@ public class NowPlayingActivity extends AppCompatActivity {
                 new ParallaxPagerTransformer()
                         .addViewToParallax(new ParallaxPagerTransformer.ParallaxTransformInformation(R.id.nowPlay_title,2f,2f))
                         .addViewToParallax(new ParallaxPagerTransformer.ParallaxTransformInformation(R.id.nowPlay_artist,3f,3f)));
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                int index = binder.getIndex();
+                if (binder.isSameList()) {
+                    if (index < position) {
+                        binder.nextMusic();
+                    } else if (index > position) {
+                        binder.preciousMusic();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         // set start button
         startButton = findViewById(R.id.nowPlay_button_start);
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binder.playMusic();
+                binder.handleMusic();
             }
         });
     }
@@ -86,11 +113,37 @@ public class NowPlayingActivity extends AppCompatActivity {
 
     };
 
+    private BroadcastReceiver updateUIReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals("UPDATE_UI")) {
+                int STATE = intent.getIntExtra("UI_STATE", -2);
+                System.out.println("MYFLAG_STATE_" + STATE);
+                switch (STATE) {
+                    case 1:
+                        startButton.setText(getString(R.string.nowPlaying_stop));
+                        break;
+                    case 0:
+                        startButton.setText(getString(R.string.nowPlaying_start));
+                        break;
+                    case 2:
+                        break;
+                    case -1:
+                        break;
+                }
+            } else { // for now, think it as action INITIAL_UI
+                int STATE = intent.getIntExtra("UI_STATE", -1);
+                viewPager.setCurrentItem(STATE);
+            }
+        }
+    };
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         Log.d( "MYFLAG", "nowPlayingActivity onDestroy()");
         //binder.closeMedia();
+        unregisterReceiver(updateUIReceiver);
         unbindService(serviceConnection);
     }
 }

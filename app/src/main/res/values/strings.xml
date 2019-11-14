@@ -6,6 +6,7 @@
     <string name="title_activity_now_playing">NowPlaying</string>
     <string name="nowPlaying_albumImage">Album image</string>
     <string name="nowPlaying_start">開始</string>
+    <string name="nowPlaying_stop">離開</string>
     <string name="nowPlaying_artist">Luckilyの世界</string>
 
     <!-- TODO: Remove or change this placeholder text -->
