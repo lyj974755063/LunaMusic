@@ -1,13 +1,10 @@
 package com.example.androidisshit.service;
 
-import android.app.Application;
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
-import android.widget.Toast;
-import com.example.androidisshit.activity.MainActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;

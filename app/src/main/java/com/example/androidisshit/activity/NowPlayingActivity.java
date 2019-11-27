@@ -125,6 +125,7 @@ public class NowPlayingActivity extends AppCompatActivity {
                         startButton.setText(getString(R.string.nowPlaying_start));
                         break;
                     case 2:
+
                         break;
                     case -1:
                         break;
