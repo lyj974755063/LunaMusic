@@ -75,9 +75,19 @@ public class NowPlayingActivity extends AppCompatActivity {
                 int index;
                 index = binder.getPreparedIndex();
                 if (index < position) {
-                    binder.nextMusic();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            binder.nextMusic();
+                        }
+                    }).start();
                 } else if (index > position) {
-                    binder.preciousMusic();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            binder.preciousMusic();
+                        }
+                    }).start();
                 }
             }
 

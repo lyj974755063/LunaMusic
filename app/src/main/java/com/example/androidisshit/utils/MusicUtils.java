@@ -51,7 +51,7 @@ public class MusicUtils {
             Uri uri = ContentUris.withAppendedId(sArtworkUri, album_id);
             return uri.toString();
         } else {
-            return NetUtils.getNetArtUri(album_id);
+            return NetUtils.getNetArtUri(Integer.parseInt(String.valueOf((int)album_id)));
         }
 
     }

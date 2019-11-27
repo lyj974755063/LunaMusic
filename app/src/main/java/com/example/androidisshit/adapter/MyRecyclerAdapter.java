@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -82,8 +83,9 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
 
             // Set cover foreground color and text color
             if (album.getPrimaryColor()==0) {
+                String url = MusicUtils.getArtUri(album.getAlbumId());
                 Glide.with(context)
-                        .load(MusicUtils.getArtUri(album.getAlbumId()))
+                        .load(url)
                         .override(150)
                         .into(new CustomTarget<Drawable>() {
                             @Override

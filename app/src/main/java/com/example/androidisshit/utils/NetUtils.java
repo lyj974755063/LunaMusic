@@ -44,7 +44,7 @@ public class NetUtils {
                 .getJSONObject("playlist")
                 .getJSONArray("tracks");
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 7; i++) {
             JSONObject al = ((JSONObject) jsonArray.get(i)).getJSONObject("al");
             int alId = al.getInteger("id");
 
@@ -62,8 +62,9 @@ public class NetUtils {
 
     }
 
-    public static String getNetArtUri(long album_id) {
-        return netArtMap.get(album_id);
+    public static String getNetArtUri(Integer album_id) {
+        String temp = netArtMap.get(album_id);
+        return temp;
     }
 
     private static String getJSONWithHttpsURLConnection(URL url) throws IOException, NoSuchProviderException, NoSuchAlgorithmException, KeyManagementException {
