@@ -106,7 +106,6 @@ public class NowPlayingActivity extends AppCompatActivity {
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-
         }
 
     };
