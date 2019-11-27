@@ -103,7 +103,7 @@ public class NowPlayingActivity extends AppCompatActivity {
             binder = ((MusicService.MyBinder) service);
             binder.iniPlayList(paths);
         }
-
+/**/
         @Override
         public void onServiceDisconnected(ComponentName name) {
         }

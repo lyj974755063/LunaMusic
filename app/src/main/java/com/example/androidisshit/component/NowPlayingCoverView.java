@@ -33,7 +33,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class NowPlayingCoverView extends View {
 
     private Context context;
-    private Uri coverUri;
+    private String coverUri;
     private Bitmap[] bitmapCovers;
     private int bIsDrawSuccess;
 
@@ -128,11 +128,11 @@ public class NowPlayingCoverView extends View {
     }
 
 
-    public Uri getCoverUri() {
+    public String getCoverUri() {
         return coverUri;
     }
 
-    public void setCoverUri(Uri coverUri) {
+    public void setCoverUri(String coverUri) {
         this.coverUri = coverUri;
         Glide.with(context)
                 .load(coverUri)

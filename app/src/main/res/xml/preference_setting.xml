@@ -7,6 +7,11 @@
                 android:title="Dark Mod"
                 android:summary="Click to switch on or off"
                 android:defaultValue="false"/>
+        <SwitchPreference
+                android:key="net"
+                android:title="Net Mod"
+                android:summary="Look up what kind of music Luckily is listening"
+                android:defaultValue="false"/>
     </PreferenceCategory>
     <PreferenceCategory
             android:title="Info">

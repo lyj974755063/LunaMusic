@@ -2,8 +2,10 @@ package com.example.androidisshit.activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.*;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Toast;
@@ -16,11 +18,13 @@ import com.example.androidisshit.R;
 import com.example.androidisshit.adapter.MyRecyclerAdapter;
 import com.example.androidisshit.entity.Song;
 import com.example.androidisshit.service.MusicService;
+import com.example.androidisshit.utils.NetUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -46,12 +50,23 @@ public class MainActivity extends AppCompatActivity {
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
             }, 1);
         } else {
-            initializeActivity();
+            try {
+                initializeActivity();
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    private void initializeActivity() {
+    private void initializeActivity() throws IOException, InterruptedException {
         // All those thing are doing under the prediction that user has given right permission
+
+        // Check is net mod
+        if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("net", false)) {
+            NetUtils.bIsNetMod = true;
+            System.out.println("MYLOG_"+"netmod_true");
+        }
+
         //Parallax list
         parallaxRecyclerView = (ParallaxRecyclerView) findViewById(R.id.RecyclerView);
         parallaxRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -131,7 +146,11 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case 1:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    initializeActivity();
+                    try {
+                        initializeActivity();
+                    } catch (IOException | InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     return;
                 } else {
                     Toast.makeText(this, "Can't get permission", Toast.LENGTH_SHORT).show();

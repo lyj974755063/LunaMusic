@@ -1,6 +1,7 @@
 package com.example.androidisshit.entity;
 
 import android.graphics.Color;
+import com.alibaba.fastjson.annotation.JSONField;
 
 import java.io.Serializable;
 import java.util.ArrayList;

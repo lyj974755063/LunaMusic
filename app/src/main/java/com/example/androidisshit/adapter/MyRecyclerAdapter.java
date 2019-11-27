@@ -20,6 +20,10 @@ import com.example.androidisshit.entity.Album;
 import com.example.androidisshit.entity.Song;
 import com.example.androidisshit.utils.MusicUtils;
 
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,11 +42,29 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter {
         this.itemClickListener = onItemClickListener;
     }
 
-    public MyRecyclerAdapter(Context context){
+    public MyRecyclerAdapter(Context context) throws IOException, InterruptedException {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
-        Song.allSongs = MusicUtils.getAllMusic(context);
-        albums = Album.AllAlbums = Album.getAllAlbums(Song.allSongs);
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    Song.allSongs = MusicUtils.getAllMusic(context);
+                    Song.allSongs = MusicUtils.getAllMusic(context);
+                    albums = Album.AllAlbums = Album.getAllAlbums(Song.allSongs);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                } catch (KeyManagementException e) {
+                    e.printStackTrace();
+                } catch (NoSuchProviderException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        thread.start();
+        thread.join();
     }
 
     @Override
