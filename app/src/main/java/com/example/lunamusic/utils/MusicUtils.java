@@ -1,0 +1,96 @@
+package com.example.lunamusic.utils;
+
+import android.content.ContentUris;
+import android.content.Context;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
+import com.example.lunamusic.entity.Song;
+
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.util.ArrayList;
+
+public class MusicUtils {
+    private final static int EXCLUDE_DURATION = 40;
+
+    public static ArrayList<Song> getAllMusic(Context context) throws IOException, NoSuchAlgorithmException, NoSuchProviderException, KeyManagementException {
+        if (!NetUtils.bIsNetMod) {
+            ArrayList<Song> songList = new ArrayList<>();
+            Cursor cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+                    , null, MediaStore.Audio.Media.DURATION + ">= 60000", null, MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
+
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    Song song = new Song();
+                    song.setDuration(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)));
+                    song.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)));
+                    song.setId(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)));
+                    song.setArtist(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)));
+                    song.setPath(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)));
+                    song.setSize(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE)));
+                    song.setAlbumId(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)));
+                    song.setAlbumTitle(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)));
+                    songList.add(song);
+                }
+            }
+            cursor.close();
+            return songList;
+        } else {
+            return NetUtils.getAllNetMusic();
+        }
+    }
+
+    public static String getArtUri(long album_id) {
+        if (!NetUtils.bIsNetMod) {
+            Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
+            Uri uri = ContentUris.withAppendedId(sArtworkUri, album_id);
+            return uri.toString();
+        } else {
+            return NetUtils.getNetArtUri(Integer.parseInt(String.valueOf((int)album_id)));
+        }
+
+    }
+
+    @Deprecated
+    public static Bitmap getAlbumArt(Context context, long album_id) {
+        String mUriAlbums = "content://media/external/audio/albums";
+        String[] projection = new String[]{"album_art"};
+        Cursor cur = context.getContentResolver().query(Uri.parse(mUriAlbums + "/" + Long.toString(album_id)), projection, null, null, null);
+        String album_art = null;
+        if (cur.getCount() > 0 && cur.getColumnCount() > 0) {
+            cur.moveToNext();
+            album_art = cur.getString(0);
+        }
+        cur.close();
+        Bitmap bm = null;
+        if (album_art != null) {
+            bm = BitmapFactory.decodeFile(album_art);
+        } else {
+            //bm = BitmapFactory.decodeResource(getResources(), R.drawable.default_cover);
+            System.out.println("null cover");
+        }
+        return bm;
+    }
+
+    @Deprecated
+    private static boolean checkCanInclude(int duration) {
+        if (duration > 0) {
+            duration /= 1000;
+            if (duration > EXCLUDE_DURATION) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+
+    }
+
+}
+

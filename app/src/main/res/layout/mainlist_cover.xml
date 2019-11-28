@@ -6,7 +6,7 @@
               android:clickable="true"
               android:focusable="true"
               android:foreground="@drawable/ripple">
-    <com.example.androidisshit.component.ParallaxImageView
+    <com.example.lunamusic.component.ParallaxImageView
             android:id="@+id/cover_img"
             android:layout_width="match_parent"
             android:layout_height="150dp"/>
