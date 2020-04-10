@@ -5,8 +5,5 @@ A simple music player, with some experimental idea.
   <img src="https://github.com/lyj974755063/LunaMusic/blob/master/pic/Screenshot_2019-10-19-18-13-26-653_com.example.androidisshit.jpg" height="660" width="330" >
 </div>
 
-## For This Project
-
-
 ## Thanks
 [ParallaxRecyclerView](ParallaxRecyclerView)
